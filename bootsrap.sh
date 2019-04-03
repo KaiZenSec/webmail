@@ -3,7 +3,7 @@ if [ "$1" != "" ] && [ "$2" != "" ]; then
 
 apt update && apt upgrade
 apt install -y mariadb-server mariadb-client postfix postfix-mysql courier-base courier-authdaemon courier-authlib-mysql courier-imap courier-imap-ssl courier-ssl certbot
-mysql -u root -e "SET PASSWORD FOR root@'localhost' = PASSWORD($1);"
+mysql -u root -e "SET PASSWORD FOR root@'localhost' = PASSWORD('$1');"
 mysql -e "create database maildb;"
 mysql -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON maildb.* TO 'mail'@'localhost' IDENTIFIED by '$2';"
 mysql -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON maildb.* TO 'mail'@'%' IDENTIFIED by '$2';" 
