@@ -92,7 +92,7 @@ EOF
 certbot certonly -n -d webmail2.csettp.com --standalone --agree-tos --no-eff-email -m redteam@csettp.com
 
 sed -i "s/IMAP_CAPABILITY.*/IMAP_CAPABILITY=\"IMAP4rev1 UIDPLUS CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA AUTH=CRAM-MD5 AUTH=CRAM-SHA1 IDLE\"/" /etc/courier/imapd
-cat /etc/letsencrypt/live/webmail2.csettp.com/privkey.pem /etc/letsencrypt/live/webmail2.csettp.com/fullchain.pem > /etc/courier/webmail2-imapd.pem   
+cat /etc/letsencrypt/live/webmail2.csettp.com/privkey.pem /etc/letsencrypt/live/webmail2.csettp.com/fullchain.pem > /etc/courier/webmail2-imapd.pem
 chmod 600 /etc/courier/webmail2-imapd.pem
 
 service postfix restart
