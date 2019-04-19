@@ -88,7 +88,7 @@ auxprop_plugin: sql
 sql_engine: mysql
 sql_hostnames: 127.0.0.1
 sql_user: mail
-sql_password: $2
+sql_passwd: $2
 sql_database: maildb
 sql_select: select crypt from users where id='%u@%r' and enabled = 1
 EOF
