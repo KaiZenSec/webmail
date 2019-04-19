@@ -23,9 +23,9 @@ compatibility_level = 2
 
 # TLS parameters
 #smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
-smtpd_tls_cert_file=/etc/letsencrypt/live/webmail.csettp.com/fullchain.pem
+smtpd_tls_cert_file=/etc/letsencrypt/live/webmail2.csettp.com/fullchain.pem
 #smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
-smtpd_tls_key_file=/etc/letsencrypt/live/webmail.csettp.com/privkey.pem
+smtpd_tls_key_file=/etc/letsencrypt/live/webmail2.csettp.com/privkey.pem
 #smtpd_use_tls=yes
 #smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 #smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
@@ -62,9 +62,9 @@ disable_vrfy_command = yes
 alias_maps = hash:/etc/postfix/aliases
 alias_database = hash:/etc/postfix/aliases
 myorigin = /etc/mailname
-#myorigin = mail.csettp.com
+#myorigin = 
 #mydestination = $myhostname, localhost.localdomain, kali, localhost.localdomain, localhost
-#mydestination = $myhostname, localhost, localhost.localdomain, qualtricsurvey.com
+#mydestination = $myhostname, localhost, localhost.localdomain
 mydestination =
 local_recipient_maps =
 relayhost = 
