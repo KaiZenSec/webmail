@@ -72,6 +72,7 @@ sed -i 's/MYSQL_DATABASE.*/MYSQL_DATABASE maildb/' /etc/courier/authmysqlrc
 sed -i 's/MYSQL_USER_TABLE.*/MYSQL_USER_TABLE users/' /etc/courier/authmysqlrc
 echo "MYSQL_MAILDIR_FIELD concat(home,'/',maildir)" >> /etc/courier/authmysqlrc
 echo "MYSQL_WHERE_CLAUSE enabled=1" >> /etc/courier/authmysqlrc
+sed -i 's/TLS_CERTFILE.*/TLS_CERTFILE=\/etc\/courier\/webmail2-imapd.pem/' /etc/courier/imapd-ssl
 
 #Sasl stuff
 adduser postfix sasl
