@@ -94,10 +94,8 @@ sql_select: select crypt from users where id='%u@%r' and enabled = 1
 EOF
 
 cat << EOF > /etc/pam.d/smtp
-auth required pam_mysql.so user=mail passwd=$2
-host=127.0.0.1 db=maildb table=users usercolumn=id passwdcolumn=crypt crypt=1
-account sufficient pam_mysql.so user=mail passwd=$2
-host=127.0.0.1 db=maildb table=users usercolumn=id passwdcolumn=crypt crypt=1
+auth required pam_mysql.so user=mail passwd=$2 host=127.0.0.1 db=maildb table=users usercolumn=id passwdcolumn=crypt crypt=1
+account sufficient pam_mysql.so user=mail passwd=$2 host=127.0.0.1 db=maildb table=users usercolumn=id passwdcolumn=crypt crypt=1
 EOF
 
 certbot certonly -n -d webmail2.csettp.com --standalone --agree-tos --no-eff-email -m redteam@csettp.com
