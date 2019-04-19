@@ -89,8 +89,7 @@ account sufficient pam_mysql.so user=mail passwd=$2
 host=127.0.0.1 db=maildb table=users usercolumn=id passwdcolumn=crypt crypt=1
 EOF
 
-echo 'email = redteam@csettp.com' >> /etc/letsencrypt/cli.ini
-certbot certonly -n -d webmail2.csettp.com --standalone --agree-tos --no-eff-email
+certbot certonly -n -d webmail2.csettp.com --standalone --agree-tos --no-eff-email -m redteam@csettp.com
 
 sed -i "s/IMAP_CAPABILITY.*/IMAP_CAPABILITY=\"IMAP4rev1 UIDPLUS CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA AUTH=CRAM-MD5 AUTH=CRAM-SHA1 IDLE\"/" /etc/courier/imapd
 cat /etc/letsencrypt/live/webmail2.csettp.com/privkey.pem /etc/letsencrypt/live/webmail2.csettp.com/fullchain.pem > /etc/courier/webmail2-imapd.pem   
