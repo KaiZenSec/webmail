@@ -54,20 +54,30 @@ hosts=127.0.0.1
 additional_conditions = and enabled = 1
 EOF
 
+cat << EOF > /etc/postfix/client_checks
+111.248.154.155		REJECT Spam
+36.229.50.138		REJECT Spam
+111.241.16.114		REJECT Spam
+118.167.28.92		REJECT Spam
+1.164.14.163		REJECT Spam
+114.45.95.101		REJECT Spam
+1.164.12.238		REJECT Spam
+EOF
+
 sed -i 's/authmodulelist=[^ ]*/authmodulelist=\"authmysql\"/' /etc/courier/authdaemonrc
 sed -i 's/DEBUG_LOGIN=[^ ]*/DEBUG_LOGIN=1/' /etc/courier/authdaemonrc
 sed -i 's/MYSQL_USERNAME.*/MYSQL_USERNAME mail/' /etc/courier/authmysqlrc
-sed -i "s/MYSQL_PASSWORD[^ ]*/MYSQL_PASSWORD $2/" /etc/courier/authmysqlrc
-sed -i 's/MYSQL_DATABASE[^ ]*/MYSQL_DATABASE maildb/' /etc/courier/authmysqlrc
-sed -i 's/MYSQL_USER_TABLE[^ ]*/MYSQL_USER_TABLE users/' /etc/courier/authmysqlrc
+sed -i "s/MYSQL_PASSWORD.*/MYSQL_PASSWORD $2/" /etc/courier/authmysqlrc
+sed -i 's/MYSQL_DATABASE.*/MYSQL_DATABASE maildb/' /etc/courier/authmysqlrc
+sed -i 's/MYSQL_USER_TABLE.*/MYSQL_USER_TABLE users/' /etc/courier/authmysqlrc
 echo "MYSQL_MAILDIR_FIELD concat(home,'/',maildir)" >> /etc/courier/authmysqlrc
 echo "MYSQL_WHERE_CLAUSE enabled=1" >> /etc/courier/authmysqlrc
 
 #Sasl stuff
 adduser postfix sasl
 mkdir -p /var/spool/postfix/var/run/saslauthd
-sed -i 's/START[^ ]*/START=yes/' /etc/default/saslauthd
-sed -i "s/OPTIONS[^ ]*/OPTIONS=\"-r -c -m \/var\/spool\/postfix\/var\/run\/saslauthd\"/" /etc/default/saslauthd
+sed -i 's/START.*/START=yes/' /etc/default/saslauthd
+sed -i "s/OPTIONS.*/OPTIONS=\"-r -c -m \/var\/spool\/postfix\/var\/run\/saslauthd\"/" /etc/default/saslauthd
 
 cat << EOF > /etc/postfix/sasl/smtpd.conf
 pwcheck_method: saslauthd
