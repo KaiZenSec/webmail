@@ -5,7 +5,7 @@
 if [ "$1" != "" ] && [ "$2" != "" ]&& [ "$3" != "" ]; then
 
 mysql -D maildb -e "INSERT INTO domains (domain) VALUES ('$1');"
-mysql -D maildb -e "INSERT INTO aliases (mail,destination) VALUES ('@$1','$2@$3');"
+mysql -D maildb -e "INSERT INTO aliases (mail,destination) VALUES ('@$1','$2@$1');"
 mysql -D maildb -e "INSERT INTO users (id,maildir,crypt) VALUES ('$2@$1','$2/',encrypt('$3', CONCAT('\$5\$', MD5(RAND()))) );"
 mysql -D maildb -e "INSERT INTO aliases (mail,destination) VALUES('$2@$1','$2@$1');"
 
