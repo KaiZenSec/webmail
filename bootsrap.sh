@@ -10,7 +10,7 @@ mysql -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON maildb.* TO 'mail'@'%
 mysql -D maildb -e "CREATE TABLE aliases (pkid smallint(3) NOT NULL auto_increment,mail varchar(120) NOT NULL default '',destination varchar(120) NOT NULL default '',enabled tinyint(1) NOT NULL default '1',PRIMARY KEY  (pkid),UNIQUE KEY mail (mail)) ;"
 mysql -D maildb -e "CREATE TABLE domains (pkid smallint(6) NOT NULL auto_increment,domain varchar(120) NOT NULL default '',transport varchar(120) NOT NULL default 'virtual:',enabled tinyint(1) NOT NULL default '1',PRIMARY KEY  (pkid)) ;"
 mysql -D maildb -e "CREATE TABLE users (id varchar(128) NOT NULL default '',name varchar(128) NOT NULL default '',uid smallint(5) unsigned NOT NULL default '5000',gid smallint(5) unsigned NOT NULL default '5000',home varchar(255) NOT NULL default '/var/spool/mail/virtual',maildir varchar(255) NOT NULL default 'blah/',enabled tinyint(1) NOT NULL default '1',change_password tinyint(1) NOT NULL default '1',clear varchar(128) NOT NULL default 'ChangeMe',crypt varchar(128) NOT NULL default 'sdtrusfX0Jj66',quota varchar(255) NOT NULL default '',PRIMARY KEY  (id),UNIQUE KEY id (id)) ;"
-echo 'webmail2.csettp.com' >> /etc/mailname
+echo 'webmail.csettp.com' >> /etc/mailname
 wget https://raw.githubusercontent.com/KaiZenSec/webmail/master/main.cf -O /etc/postfix/main.cf
 wget https://raw.githubusercontent.com/KaiZenSec/webmail/master/master.cf -O /etc/postfix/master.cf
 cp /etc/aliases /etc/postfix/aliases
@@ -72,7 +72,7 @@ sed -i 's/MYSQL_DATABASE.*/MYSQL_DATABASE maildb/' /etc/courier/authmysqlrc
 sed -i 's/MYSQL_USER_TABLE.*/MYSQL_USER_TABLE users/' /etc/courier/authmysqlrc
 echo "MYSQL_MAILDIR_FIELD concat(home,'/',maildir)" >> /etc/courier/authmysqlrc
 echo "MYSQL_WHERE_CLAUSE enabled=1" >> /etc/courier/authmysqlrc
-sed -i 's/TLS_CERTFILE.*/TLS_CERTFILE=\/etc\/courier\/webmail2-imapd.pem/' /etc/courier/imapd-ssl
+sed -i 's/TLS_CERTFILE.*/TLS_CERTFILE=\/etc\/courier\/webmail-imapd.pem/' /etc/courier/imapd-ssl
 
 #Sasl stuff
 adduser postfix sasl
@@ -98,11 +98,11 @@ auth required pam_mysql.so user=mail passwd=$2 host=127.0.0.1 db=maildb table=us
 account sufficient pam_mysql.so user=mail passwd=$2 host=127.0.0.1 db=maildb table=users usercolumn=id passwdcolumn=crypt crypt=1
 EOF
 
-certbot certonly -n -d webmail2.csettp.com --standalone --agree-tos --no-eff-email -m redteam@csettp.com
+certbot certonly -n -d webmail.csettp.com --standalone --agree-tos --no-eff-email -m redteam@csettp.com
 
 sed -i "s/IMAP_CAPABILITY.*/IMAP_CAPABILITY=\"IMAP4rev1 UIDPLUS CHILDREN NAMESPACE THREAD=ORDEREDSUBJECT THREAD=REFERENCES SORT QUOTA AUTH=CRAM-MD5 AUTH=CRAM-SHA1 IDLE\"/" /etc/courier/imapd
-cat /etc/letsencrypt/live/webmail2.csettp.com/privkey.pem /etc/letsencrypt/live/webmail2.csettp.com/fullchain.pem > /etc/courier/webmail2-imapd.pem
-chmod 600 /etc/courier/webmail2-imapd.pem
+cat /etc/letsencrypt/live/webmail.csettp.com/privkey.pem /etc/letsencrypt/live/webmail.csettp.com/fullchain.pem > /etc/courier/webmail-imapd.pem
+chmod 600 /etc/courier/webmail-imapd.pem
 
 service postfix restart
 service courier-imap-ssl restart
